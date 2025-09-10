@@ -79,7 +79,6 @@ Implement unit tests for the generate_docs.py and create_issues.py scripts to en
 
 **Labels:** 
 - enhancement
-- test
 
 **Milestone:** 
 N/A
@@ -103,7 +102,6 @@ Set up a CI/CD pipeline using GitHub Actions to automate testing, code quality c
 
 **Labels:** 
 - enhancement
-- ci
 
 **Milestone:** 
 N/A
@@ -139,3 +137,14 @@ medium
 
 **Context:** 
 Currently, the automation tools require command-line arguments for all customization. Adding configuration file support would improve usability and make it easier to use the tools in different environments.
+
+## Created Issues
+
+The following issues have been automatically created:
+
+- [#1: Add comprehensive LICENSE file to repository](https://github.com/lfgranja/AGENTIC-devDOCS/issues/1)
+- [#2: Expand CONTRIBUTING.md with detailed contribution guidelines](https://github.com/lfgranja/AGENTIC-devDOCS/issues/2)
+- [#3: Create architecture documentation for automation tools](https://github.com/lfgranja/AGENTIC-devDOCS/issues/3)
+- [#4: Add unit tests for Python automation scripts](https://github.com/lfgranja/AGENTIC-devDOCS/issues/4)
+- [#5: Implement CI/CD pipeline with GitHub Actions](https://github.com/lfgranja/AGENTIC-devDOCS/issues/5)
+- [#6: Add configuration support for automation tools](https://github.com/lfgranja/AGENTIC-devDOCS/issues/6)
