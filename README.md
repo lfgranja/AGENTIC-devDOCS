@@ -14,6 +14,10 @@ This repository contains comprehensive guidelines for AI-powered software develo
 - [`AGENTIC/QWEN.md`](AGENTIC/QWEN.md) - Qwen-specific directives
 - [`AGENTIC/GEMINI.md`](AGENTIC/GEMINI.md) - Gemini-specific guidelines
 
+## Attribution
+
+The initial content for `AGENTIC/AGENTIC.md` was derived from the [Google Gemini CLI system prompt](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools/blob/main/Open%20Source%20prompts/Gemini%20CLI/google-gemini-cli-system-prompt.txt).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
