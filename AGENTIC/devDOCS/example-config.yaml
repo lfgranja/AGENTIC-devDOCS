@@ -1,0 +1,12 @@
+# Example configuration for generate_docs.py
+changed_files: "changed_files.txt"
+output_dir: "./docs"
+branch: "main"
+pr_number: "123"
+openai_api_key: "YOUR_OPENAI_API_KEY_HERE"
+
+# Example configuration for create_issues.py
+github_token: "YOUR_GITHUB_TOKEN_HERE"
+repo: "owner/repo"
+pr: 123
+issues_file: "ISSUES_TO_CREATE123.md"

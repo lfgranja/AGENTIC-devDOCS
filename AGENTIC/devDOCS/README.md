@@ -52,6 +52,73 @@ This file contains a list of issues that should be created in the repository bas
 - Estimated complexity
 - Any relevant context or background information
 
+## Automation Tools
+
+This directory contains automation tools for generating documentation and creating GitHub issues:
+
+### generate_docs.py
+
+Automatically generates development documentation based on code changes.
+
+Usage:
+```bash
+python generate_docs.py --changed-files CHANGED_FILES --output-dir OUTPUT_DIR --branch BRANCH [--pr-number PR_NUMBER] [--openai-api-key OPENAI_API_KEY] [--config CONFIG_FILE]
+```
+
+### create_issues.py
+
+Automatically creates GitHub issues from ISSUES_TO_CREATE documentation after a PR has been merged.
+
+Usage:
+```bash
+python create_issues.py --token GITHUB_TOKEN --repo REPO --pr PR_NUMBER --issues-file ISSUES_FILE [--config CONFIG_FILE]
+```
+
+### Configuration Support
+
+Both automation tools support configuration files to avoid passing parameters through command line arguments. 
+Configuration files can be in JSON or YAML format.
+
+Example JSON configuration (`.agentic-config.json`):
+```json
+{
+  "changed_files": "changed_files.txt",
+  "output_dir": "./docs",
+  "branch": "main",
+  "pr_number": "123",
+  "openai_api_key": "YOUR_OPENAI_API_KEY_HERE",
+  "github_token": "YOUR_GITHUB_TOKEN_HERE",
+  "repo": "owner/repo",
+  "pr": 123,
+  "issues_file": "ISSUES_TO_CREATE123.md"
+}
+```
+
+Example YAML configuration (`.agentic-config.yaml`):
+```yaml
+# Configuration for generate_docs.py
+changed_files: "changed_files.txt"
+output_dir: "./docs"
+branch: "main"
+pr_number: "123"
+openai_api_key: "YOUR_OPENAI_API_KEY_HERE"
+
+# Configuration for create_issues.py
+github_token: "YOUR_GITHUB_TOKEN_HERE"
+repo: "owner/repo"
+pr: 123
+issues_file: "ISSUES_TO_CREATE123.md"
+```
+
+Configuration files are automatically detected in the following locations:
+1. `.agentic-config.json` or `.agentic-config.yaml` in the current directory
+2. `agentic-config.json` or `agentic-config.yaml` in the current directory
+3. `.agentic-config.json` or `.agentic-config.yaml` in the user's home directory
+
+Environment variables can also be used:
+- `OPENAI_API_KEY` for OpenAI API key
+- `GITHUB_TOKEN` for GitHub personal access token
+
 ## Process
 
 1. During development, create a subdirectory in devDOCS named after the branch or PR number
