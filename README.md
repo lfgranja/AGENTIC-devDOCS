@@ -21,6 +21,5 @@ The initial content for `AGENTIC/AGENTIC.md` was derived from the [Google Gemini
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-=======
+
 Comprehensive guidelines and workflows for AI-powered software development agents
->>>>>>> origin/main
