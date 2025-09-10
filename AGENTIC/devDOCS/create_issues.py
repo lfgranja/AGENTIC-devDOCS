@@ -15,7 +15,7 @@ from github import Github, Issue, Repository
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__) 
 
 @dataclass
 class IssueInfo:
@@ -63,7 +63,7 @@ class IssueCreator:
             content = f.read()
             
         # Split content by issue headers (lines starting with ### Issue)
-        issue_sections = re.split(r'###\\s+Issue\\s+\\d+:\\s*', content)
+        issue_sections = re.split(r'###\s+Issue\s+\d+:\s*', content)
         
         # Remove the first section (header text before first issue)
         issue_sections = issue_sections[1:] if issue_sections else []
@@ -83,12 +83,10 @@ class IssueCreator:
         
         Args:
             section: Text content of a single issue section
-            
-        Returns:
-            IssueInfo object or None if parsing fails
         """
         # Extract title
-        title_match = re.search(r'^\\s*[*]{2}Title[*]{2}:\\s*(.+?)\\s*$', section, re.MULTILINE)
+        title_match = re.search(r'^\s*[*]{2}Title[*]{2}:\s*(.+?)\s*$',
+                              section, re.MULTILINE)
         if not title_match:
             logger.warning("Could not find title in issue section")
             return None
@@ -96,7 +94,7 @@ class IssueCreator:
         title = title_match.group(1).strip()
         
         # Extract description
-        desc_match = re.search(r'^\\s*[*]{2}Description[*]{2}:\\s*(.+?)\\s*$',
+        desc_match = re.search(r'^\s*[*]{2}Description[*]{2}:\s*(.+?)\s*$',
                               section, re.MULTILINE | re.DOTALL)
         if not desc_match:
             logger.warning(f"Could not find description for issue '{title}'")
@@ -107,7 +105,7 @@ class IssueCreator:
         description = '\n'.join(line.strip() for line in description_lines)
         
         # Extract labels
-        labels_match = re.search(r'^\\s*[*]{2}Labels[*]{2}:\\s*(.+?)\\s*$',
+        labels_match = re.search(r'^\s*[*]{2}Labels[*]{2}:\s*(.+?)\s*$',
                                section, re.MULTILINE)
         labels = []
         if labels_match:
@@ -115,22 +113,22 @@ class IssueCreator:
             labels = [label.strip() for label in re.split(r'[,;]', labels_text)]
             
         # Extract milestone
-        milestone_match = re.search(r'^\\s*[*]{2}Milestone[*]{2}:\\s*(.+?)\\s*$',
+        milestone_match = re.search(r'^\s*[*]{2}Milestone[*]{2}:\s*(.+?)\s*$',
                                   section, re.MULTILINE)
         milestone = milestone_match.group(1).strip() if milestone_match else None
         
         # Extract priority
-        priority_match = re.search(r'^\\s*[*]{2}Priority[*]{2}:\\s*(.+?)\\s*$',
+        priority_match = re.search(r'^\s*[*]{2}Priority[*]{2}:\s*(.+?)\s*$',
                                   section, re.MULTILINE)
         priority = priority_match.group(1).strip() if priority_match else None
         
         # Extract complexity
-        complexity_match = re.search(r'^\\s*[*]{2}Complexity[*]{2}:\\s*(.+?)\\s*$',
+        complexity_match = re.search(r'^\s*[*]{2}Complexity[*]{2}:\s*(.+?)\s*$',
                                     section, re.MULTILINE)
         complexity = complexity_match.group(1).strip() if complexity_match else None
         
         # Extract context
-        context_match = re.search(r'^\\s*[*]{2}Context[*]{2}:\\s*(.+?)\\s*$',
+        context_match = re.search(r'^\s*[*]{2}Context[*]{2}:\s*(.+?)\s*$',
                                  section, re.MULTILINE | re.DOTALL)
         context = context_match.group(1).strip() if context_match else None
         
