@@ -35,7 +35,7 @@ import git
 import openai
 
 # Import the config module
-from .config import ConfigManager
+from config import ConfigManager
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
