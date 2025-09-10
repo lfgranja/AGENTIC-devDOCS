@@ -13,6 +13,9 @@ from typing import List, Dict, Optional
 from dataclasses import dataclass
 from github import Github, Issue, Repository
 
+# Import the config module
+from .config import ConfigManager
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -304,21 +307,42 @@ class IssueCreator:
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(description='Automatically create GitHub issues from documentation')
-    parser.add_argument('--token', required=True, help='GitHub personal access token')
-    parser.add_argument('--repo', required=True, help='Repository name (owner/repo)')
-    parser.add_argument('--pr', required=True, type=int, help='PR number')
-    parser.add_argument('--issues-file', required=True, help='Path to ISSUES_TO_CREATE{PR_NUMBER}.md file')
+    parser.add_argument('--token', help='GitHub personal access token')
+    parser.add_argument('--repo', help='Repository name (owner/repo)')
+    parser.add_argument('--pr', type=int, help='PR number')
+    parser.add_argument('--issues-file', help='Path to ISSUES_TO_CREATE{PR_NUMBER}.md file')
+    parser.add_argument('--config', help='Path to configuration file')
     
     args = parser.parse_args()
     
+    # Load configuration
+    config_manager = ConfigManager(args.config or ConfigManager.find_config_file())
+    config = config_manager.load_config()
+    
+    # Use command line arguments if provided, otherwise use config file values
+    github_token = args.token or config_manager.get('github_token') or os.environ.get('GITHUB_TOKEN')
+    repo_name = args.repo or config_manager.get('repo')
+    pr_number = args.pr or config_manager.get('pr')
+    issues_file_path = args.issues_file or config_manager.get('issues_file')
+    
+    # Validate required parameters
+    if not github_token:
+        parser.error("GitHub token is required")
+    if not repo_name:
+        parser.error("Repository name is required")
+    if not pr_number:
+        parser.error("PR number is required")
+    if not issues_file_path:
+        parser.error("Issues file path is required")
+    
     # Create issue creator
-    creator = IssueCreator(args.token, args.repo)
+    creator = IssueCreator(github_token, repo_name)
     
     # Create issues
-    created_issues = creator.create_issues_from_pr(args.pr, args.issues_file)
+    created_issues = creator.create_issues_from_pr(pr_number, issues_file_path)
     
     # Update documentation with links to created issues
-    creator.update_documentation(args.issues_file, created_issues)
+    creator.update_documentation(issues_file_path, created_issues)
     
     # Print summary
     print(f"Created {len(created_issues)} issues:")

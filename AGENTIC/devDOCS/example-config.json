@@ -1,0 +1,7 @@
+{
+  "changed_files": "changed_files.txt",
+  "output_dir": "./docs",
+  "branch": "main",
+  "pr_number": "123",
+  "openai_api_key": "YOUR_OPENAI_API_KEY_HERE"
+}

@@ -12,6 +12,9 @@ from pathlib import Path
 import git
 import openai
 
+# Import the config module
+from .config import ConfigManager
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -319,23 +322,45 @@ class DocumentationGenerator:
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(description='Automatically generate development documentation')
-    parser.add_argument('--changed-files', required=True, help='Path to file containing list of changed files')
-    parser.add_argument('--output-dir', required=True, help='Directory to save documentation files')
-    parser.add_argument('--branch', required=True, help='Branch name')
+    parser.add_argument('--changed-files', help='Path to file containing list of changed files')
+    parser.add_argument('--output-dir', help='Directory to save documentation files')
+    parser.add_argument('--branch', help='Branch name')
     parser.add_argument('--pr-number', help='PR number (if applicable)')
-    parser.add_argument('--openai-api-key', required=True, help='OpenAI API key')
+    parser.add_argument('--openai-api-key', help='OpenAI API key')
+    parser.add_argument('--config', help='Path to configuration file')
     
     args = parser.parse_args()
     
+    # Load configuration
+    config_manager = ConfigManager(args.config or ConfigManager.find_config_file())
+    config = config_manager.load_config()
+    
+    # Use command line arguments if provided, otherwise use config file values
+    changed_files_path = args.changed_files or config_manager.get('changed_files')
+    output_dir = args.output_dir or config_manager.get('output_dir')
+    branch_name = args.branch or config_manager.get('branch')
+    pr_number = args.pr_number or config_manager.get('pr_number')
+    openai_api_key = args.openai_api_key or config_manager.get('openai_api_key') or os.environ.get('OPENAI_API_KEY')
+    
+    # Validate required parameters
+    if not changed_files_path:
+        parser.error("changed-files path is required")
+    if not output_dir:
+        parser.error("output-dir is required")
+    if not branch_name:
+        parser.error("branch name is required")
+    if not openai_api_key:
+        parser.error("OpenAI API key is required")
+    
     # Create documentation generator
-    generator = DocumentationGenerator(args.openai_api_key)
+    generator = DocumentationGenerator(openai_api_key)
     
     # Generate documentation
     generator.generate_all_documentation(
-        args.changed_files,
-        args.output_dir,
-        args.branch,
-        args.pr_number
+        changed_files_path,
+        output_dir,
+        branch_name,
+        pr_number
     )
     
     print(f"Documentation generated in {args.output_dir}")
