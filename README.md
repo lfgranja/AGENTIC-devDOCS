@@ -1,5 +1,4 @@
 # AGENTIC-devDOCS
-<<<<<<< HEAD
 
 Comprehensive guidelines and workflows for AI-powered software development agents.
 
