@@ -1,0 +1,190 @@
+# Complete Development Workflow for Open Source Projects
+
+This document provides a comprehensive development workflow for open source projects, incorporating best practices from various successful projects.
+
+## 1. Repository Setup
+
+1. Fork the repository on GitHub
+2. Clone your forked repository locally:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/PROJECT_NAME.git
+   ```
+3. Navigate to the project directory:
+   ```bash
+   cd PROJECT_NAME
+   ```
+4. Add the upstream repository:
+   ```bash
+   git remote add upstream https://github.com/ORIGINAL_OWNER/PROJECT_NAME.git
+   ```
+5. Verify remotes:
+   ```bash
+   git remote -v
+   ```
+
+## 2. Issue Selection and Branching
+
+### Issue Selection
+1. Review open issues on GitHub, prioritizing:
+   - Issues with `bug` label
+   - Issues with `priority:high` label
+   - Issues in the current milestone
+2. For new features, create an issue first to discuss the proposal
+3. Comment on the issue to indicate you're working on it
+4. Assign the issue to yourself if possible
+
+### Branching Strategy
+1. Sync with upstream:
+   ```bash
+   git fetch upstream
+   git checkout dev
+   git merge upstream/dev
+   ```
+2. Create a new branch for your issue:
+   ```bash
+   git switch -c feature/issue-NUMBER-brief-description dev
+   ```
+   - Replace `NUMBER` with the actual issue number
+   - Use descriptive branch names in `kebab-case`
+   - Always branch from `dev`
+
+## 3. Development Process
+
+1. Create a detailed TODO list for the issue using `todo_write` tool
+2. Follow the project's style guide for coding standards
+3. Write tests for new functionality
+4. Run existing tests to ensure nothing is broken
+5. Follow TDD (Test-Driven Development) where applicable - See detailed implementation guidelines in AGENTIC.md
+6. Commit frequently with descriptive messages following Conventional Commits
+
+## 4. Code Quality and Testing
+
+1. Run linting tools:
+   - Python: `poetry run ruff check .`
+   - TypeScript: `npm run lint`
+   - Rust: `cargo clippy`
+2. Run formatting tools:
+   - Python: `poetry run ruff format .`
+   - TypeScript: `npm run format`
+   - Rust: `cargo fmt`
+3. Run type checking:
+   - Python: `poetry run mypy .`
+4. Run tests:
+   - Python: `poetry run pytest`
+   - TypeScript: `npm run test`
+   - Rust: `cargo test`
+5. Always run project-specific build, linting and type-checking commands after making changes (see Verify (Standards) in AGENTIC.md)
+
+## 5. Commit Guidelines
+
+1. Create a Conventional Commit message:
+   ```bash
+   type(scope): description
+
+   [optional body]
+
+   [optional footer]
+   ```
+2. Use appropriate commit types:
+   - `feat`: New feature
+   - `fix`: Bug fix
+   - `docs`: Documentation changes
+   - `style`: Code style changes (formatting, missing semicolons, etc.)
+   - `refactor`: Code refactoring
+   - `perf`: Performance improvements
+   - `test`: Adding or modifying tests
+   - `build`: Build system changes
+   - `ci`: CI configuration changes
+   - `chore`: Maintenance tasks
+   - `revert`: Reverting a previous commit
+3. Use appropriate scopes (examples):
+   - Backend components: `backend`
+   - Frontend components: `frontend`
+   - Desktop components: `desktop`
+   - CLI components: `cli`
+   - API components: `api`
+   - File system integrations: `nemo`, `nautilus`, `dolphin`, `vfs`
+   - CI/CD components: `ci`
+4. Keep descriptions concise, imperative, lowercase first letter, no period
+5. Reference issues in the footer:
+   ```bash
+   Fixes #123
+   Closes #456
+   ```
+
+## 6. Pre-Push Checklist
+
+1. Stage only changes related to the current issue:
+   ```bash
+   # Add specific files related to the current issue
+   git add path/to/modified-file.ts
+   git add path/to/newly-created-test-file.test.ts
+   ```
+2. Review staged changes:
+   ```bash
+   git diff --staged
+   ```
+3. Run all quality checks (linting, formatting, type checking, tests)
+4. Create a final commit with a Conventional Commit message:
+   ```bash
+   git commit -m "type(scope): description. Fixes #ISSUE_NUMBER"
+   ```
+5. Push to your fork:
+   ```bash
+   git push origin feature/issue-NUMBER-brief-description
+   ```
+
+## 7. Pull Request Process
+
+1. Create a pull request from your branch to the `dev` branch of the upstream repository
+2. Use the PR template if available
+3. Provide a clear description of the changes
+4. Link to the related issue
+5. Request review from maintainers
+6. Address any feedback received during the review process
+
+## 8. Post-PR Approval Process
+
+Follow strictly the process documented in `.qwen/POSTPR.md` after a PR has been approved. This document contains the complete post-PR approval process with detailed steps for documentation creation, issue tracking, and quality assurance.
+
+## 9. Project Architecture and Technology Stack
+
+1. **Modular Design**: The project follows a modular architecture with:
+   - Clear separation of concerns
+   - Well-defined interfaces between components
+   - Reusable components where appropriate
+
+2. **Technology Stack**: Common technologies used in projects:
+   - **Backend**: Python with appropriate frameworks
+   - **Frontend**: TypeScript with Svelte and Tailwind CSS
+   - **Desktop**: Rust with Tauri
+   - **Mobile**: Platform-appropriate technologies
+   - **CLI**: Python or Go
+
+3. **Development Tools**:
+   - **Version Control**: Git with GitHub for hosting
+   - **Dependency Management**: Poetry (Python), npm (TypeScript), Cargo (Rust)
+   - **Testing**: Pytest (Python), Jest/Vitest (TypeScript), Built-in testing (Rust)
+   - **CI/CD**: GitHub Actions
+   - **Documentation**: Markdown files in the repository
+
+## 10. Core Development Principles
+
+1. Always adhere to project conventions for style, structure, and architecture (see Core Mandates in AGENTIC.md)
+2. Maintain backward compatibility when possible
+3. Write clear, comprehensive documentation for new features
+4. Follow security best practices (see Security and Safety Rules in AGENTIC.md)
+5. Consider performance implications of changes
+6. Write tests for all new functionality
+7. Use descriptive variable and function names
+8. Keep functions small and focused
+9. Avoid code duplication
+10. Follow the Boy Scout Rule: "Always leave the code better than you found it"
+
+## 11. Collaboration and Communication
+
+1. Participate in discussions on GitHub issues
+2. Be respectful and constructive in all interactions
+3. Ask for help when needed
+4. Provide feedback to other contributors
+5. Follow the project's code of conduct
