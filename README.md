@@ -35,6 +35,10 @@ This project includes unit tests for the automation scripts. To run the tests:
    python -m pytest tests/ -v
    ```
 
+## Configuration
+
+The automation tools support configuration files for easier usage. Configuration files can be in JSON or YAML format and support all the command-line options. See [`AGENTIC/devDOCS/README.md`](AGENTIC/devDOCS/README.md) for more details.
+
 ## Attribution
 
 The initial content for `AGENTIC/AGENTIC.md` was derived from the [Google Gemini CLI system prompt](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools/blob/main/Open%20Source%20prompts/Gemini%20CLI/google-gemini-cli-system-prompt.txt).

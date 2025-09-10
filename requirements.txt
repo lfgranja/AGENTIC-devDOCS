@@ -2,6 +2,8 @@
 PyGithub>=1.55
 gitpython>=3.1.0
 openai>=1.0.0
+PyYAML>=6.0
+
 
 # Testing dependencies
 pytest>=6.2.0
