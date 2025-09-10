@@ -2,6 +2,8 @@
 
 Comprehensive guidelines and workflows for AI-powered software development agents.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Overview
 
 This repository contains comprehensive guidelines for AI-powered software development agents, including behavioral directives, workflow processes, and best practices.
@@ -21,5 +23,3 @@ The initial content for `AGENTIC/AGENTIC.md` was derived from the [Google Gemini
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-Comprehensive guidelines and workflows for AI-powered software development agents
