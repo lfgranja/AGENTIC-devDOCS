@@ -1,0 +1,65 @@
+name: PR Labeler
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize]
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Label PR based on content
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const pr = context.payload.pull_request;
+          const prBody = pr.body || '';
+          const prTitle = pr.title || '';
+          const prFiles = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: pr.number
+          });
+          
+          const labelsToAdd = [];
+          
+          // Check for documentation changes
+          if (prFiles.data.some(file => file.filename.endsWith('.md') || file.filename.includes('README'))) {
+            labelsToAdd.push('documentation');
+          }
+          
+          // Check for test changes
+          if (prFiles.data.some(file => file.filename.includes('test') || file.filename.includes('Test'))) {
+            labelsToAdd.push('test');
+          }
+          
+          // Check for configuration changes
+          if (prFiles.data.some(file => file.filename.includes('config') || file.filename.endsWith('.yml') || file.filename.endsWith('.yaml'))) {
+            labelsToAdd.push('configuration');
+          }
+          
+          // Check for feature additions
+          if (prTitle.toLowerCase().includes('feat') || prTitle.toLowerCase().includes('feature') || prBody.toLowerCase().includes('feature')) {
+            labelsToAdd.push('enhancement');
+          }
+          
+          // Check for bug fixes
+          if (prTitle.toLowerCase().includes('fix') || prTitle.toLowerCase().includes('bug') || prBody.toLowerCase().includes('bug')) {
+            labelsToAdd.push('bug');
+          }
+          
+          // Check for Python files
+          if (prFiles.data.some(file => file.filename.endsWith('.py'))) {
+            labelsToAdd.push('python');
+          }
+          
+          // Apply labels if any were identified
+          if (labelsToAdd.length > 0) {
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: labelsToAdd
+            });
+          }
