@@ -188,7 +188,7 @@ class IssueCreator:
             logger.error(f"Error getting milestone '{milestone_title}': {e}")
             return None
             
-    def create_issue(self, issue_info: IssueInfo, pr_number: int) -> Optional[Issue]:
+    def create_issue(self, issue_info: IssueInfo, pr_number: int) -> 'Optional[Issue]':
         """
         Create a GitHub issue from IssueInfo
         
@@ -237,7 +237,7 @@ class IssueCreator:
             logger.error(f"Error creating issue '{issue_info.title}': {e}")
             return None
             
-    def create_issues_from_pr(self, pr_number: int, issues_file_path: str) -> List[Issue]:
+    def create_issues_from_pr(self, pr_number: int, issues_file_path: str) -> 'List[Issue]':
         """
         Create issues from ISSUES_TO_CREATE documentation after PR merge
         
@@ -267,7 +267,7 @@ class IssueCreator:
         logger.info(f"Successfully created {len(created_issues)} issues")
         return created_issues
         
-    def update_documentation(self, issues_file_path: str, created_issues: List[Issue]):
+    def update_documentation(self, issues_file_path: str, created_issues: 'List[Issue]'):
         """
         Update the ISSUES_TO_CREATE documentation with links to created issues
         
