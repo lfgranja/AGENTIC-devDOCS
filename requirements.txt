@@ -1,0 +1,8 @@
+# Requirements for AGENTIC-devDOCS automation scripts
+PyGithub>=1.55
+gitpython>=3.1.0
+openai>=1.0.0
+
+# Testing dependencies
+pytest>=6.2.0
+pytest-mock>=3.6.0
