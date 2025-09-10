@@ -1,14 +1,24 @@
 #!/usr/bin/env python3
+<<<<<<< HEAD
 """
 Test runner for AGENTIC-devDOCS automation scripts.
 """
+=======
+\"\"\"
+Test runner for AGENTIC-devDOCS automation scripts.
+\"\"\"
+>>>>>>> 3adb7ff0547ece3b76ca0e727f06913ec9e5bd75
 
 import subprocess
 import sys
 import os
 
 def run_tests():
+<<<<<<< HEAD
     """Run all tests using pytest"""
+=======
+    \"\"\"Run all tests using pytest\"\"\"
+>>>>>>> 3adb7ff0547ece3b76ca0e727f06913ec9e5bd75
     try:
         # Run pytest
         result = subprocess.run([
@@ -31,4 +41,8 @@ def run_tests():
 
 if __name__ == "__main__":
     success = run_tests()
+<<<<<<< HEAD
     sys.exit(0 if success else 1)
+=======
+    sys.exit(0 if success else 1)
+>>>>>>> 3adb7ff0547ece3b76ca0e727f06913ec9e5bd75

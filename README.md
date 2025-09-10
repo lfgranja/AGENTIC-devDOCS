@@ -3,7 +3,9 @@
 Comprehensive guidelines and workflows for AI-powered software development agents.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 [![CI](https://github.com/lfgranja/AGENTIC-devDOCS/actions/workflows/ci.yml/badge.svg)](https://github.com/lfgranja/AGENTIC-devDOCS/actions/workflows/ci.yml)
+
 
 ## Overview
 
@@ -52,6 +54,7 @@ This repository uses GitHub Actions for continuous integration and continuous de
 - **[Code Quality and Security](.github/workflows/code-quality.yml)** - Runs code quality checks and security scans
 - **[Release](.github/workflows/release.yml)** - Creates GitHub releases when tags are pushed
 
+
 ## Attribution
 
 The initial content for `AGENTIC/AGENTIC.md` was derived from the [Google Gemini CLI system prompt](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools/blob/main/Open%20Source%20prompts/Gemini%20CLI/google-gemini-cli-system-prompt.txt).
@@ -59,5 +62,3 @@ The initial content for `AGENTIC/AGENTIC.md` was derived from the [Google Gemini
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-Comprehensive guidelines and workflows for AI-powered software development agents
