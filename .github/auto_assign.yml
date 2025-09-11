@@ -3,17 +3,28 @@
 # Enable adding reviewers to pull requests
 addReviewers: true
 
-# Set to false to disable adding assignees to pull requests
-addAssignees: false
-
-# The number of reviewers to be added to the pull request
-# Set to 0 to add all of the reviewers from the list
-numberOfReviewers: 1
-
-# A list of reviewers to be added to pull requests (GitHub user name)
+# Configuration for assigning reviewers based on labels.
 reviewers:
-  - lfgranja
+  - labels:
+      - 'ci'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
 
-# A list of keywords to be skipped the process
-# skipKeywords:
-#   - wip
+  - labels:
+      - 'python'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
+
+  - labels:
+      - 'tests'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
+
+  - labels:
+      - 'documentation'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
