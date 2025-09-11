@@ -35,7 +35,13 @@ jobs:
         # Get the list of files changed in this push
         if [ "$GITHUB_EVENT_NAME" = "push" ]; then
           # For push events, compare with the previous commit
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          # Handle the case where github.event.before might be all zeros (first commit)
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            # For the first commit, get all files in the current commit
+            CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+          else
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          fi
         else
           # For pull request events, use the GitHub API
           CHANGED_FILES=$(jq -r '.pull_request.changed_files[] | .filename' $GITHUB_EVENT_PATH 2>/dev/null || echo "")
