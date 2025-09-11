@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-\"\"\"
+"""
 Test runner for AGENTIC-devDOCS automation scripts.
-\"\"\"
+"""
 
 import subprocess
 import sys
 import os
 
 def run_tests():
-    \"\"\"Run all tests using pytest\"\"\"
+    """Run all tests using pytest"""
     try:
         # Run pytest
         result = subprocess.run([

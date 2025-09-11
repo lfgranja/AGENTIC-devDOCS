@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 # Add the devDOCS directory to the path so we can import the module
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'AGENTIC', 'devDOCS'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'AGENTIC', 'devDOCS'))
 
 from config import ConfigManager
 
