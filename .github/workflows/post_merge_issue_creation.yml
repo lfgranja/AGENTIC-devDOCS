@@ -5,6 +5,10 @@ on:
     types: [closed]
     branches: [main, dev]
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   create-issues:
     # Only run if the PR was merged (not just closed)
