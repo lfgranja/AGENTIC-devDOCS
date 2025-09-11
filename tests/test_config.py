@@ -79,3 +79,67 @@ class TestConfigManager:
         
         config_file = ConfigManager.find_config_file()
         assert config_file == '.agentic-config.json'
+    
+    def test_load_config_json_parse_error(self):
+        """Test loading configuration from invalid JSON file"""
+        # Create a temporary file with invalid JSON
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            f.write("{ invalid json }")
+            temp_file_path = f.name
+        
+        try:
+            config_manager = ConfigManager(temp_file_path)
+            config = config_manager.load_config()
+            # Should return empty dict on parse error
+            assert config == {}
+        finally:
+            os.unlink(temp_file_path)
+    
+    def test_load_config_yaml_file(self):
+        """Test loading configuration from YAML file"""
+        # Create a temporary YAML file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+            f.write("test_key: test_value\nnested:\n  key: value")
+            temp_file_path = f.name
+        
+        try:
+            config_manager = ConfigManager(temp_file_path)
+            config = config_manager.load_config()
+            assert config["test_key"] == "test_value"
+            assert config["nested"]["key"] == "value"
+        finally:
+            os.unlink(temp_file_path)
+    
+    def test_load_config_unsupported_format(self):
+        """Test loading configuration from unsupported file format"""
+        # Create a temporary file with unsupported extension
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+            f.write("test_key=test_value")
+            temp_file_path = f.name
+        
+        try:
+            config_manager = ConfigManager(temp_file_path)
+            config = config_manager.load_config()
+            # Should return empty dict for unsupported formats
+            assert config == {}
+        finally:
+            os.unlink(temp_file_path)
+    
+    def test_get_nested_malformed_path(self):
+        """Test getting nested configuration with malformed path"""
+        config_manager = ConfigManager()
+        config_manager.config = {
+            "openai": {
+                "model": "gpt-3.5-turbo"
+            }
+        }
+        # Test with empty path
+        assert config_manager.get_nested("", "default") == "default"
+        # Test with path to non-dict value
+        assert config_manager.get_nested("openai.model.nonexistent", "default") == "default"
+    
+    def test_find_config_file_no_files_found(self):
+        """Test finding configuration file when no files exist"""
+        with patch('os.path.exists', return_value=False):
+            config_file = ConfigManager.find_config_file()
+            assert config_file is None
