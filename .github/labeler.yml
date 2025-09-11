@@ -1,4 +1,21 @@
 # .github/labeler.yml
+
+# Add 'documentation' label to any PR that modifies markdown files
 documentation:
   - changed-files:
-      - any-glob-to-any-file: ["*.md"]
+      - any-glob-to-any-file: ['*.md']
+
+# Add 'ci' label to any PR that modifies GitHub Actions workflows
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/workflows/*']
+
+# Add 'python' label to any PR that modifies python files in the AGENTIC directory
+python:
+  - changed-files:
+      - any-glob-to-any-file: ['AGENTIC/**/*.py']
+
+# Add 'tests' label to any PR that modifies files in the tests directory
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ['tests/**/*.py']
