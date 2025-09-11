@@ -50,6 +50,16 @@ class TestDocumentationGenerator:
         
         assert changed_files == []
     
+    def test_get_changed_files_read_error(self):
+        """Test getting changed files with read error"""
+        generator = DocumentationGenerator("test_api_key")
+        
+        # Mock open to raise an exception
+        with patch("builtins.open", side_effect=Exception("Read error")):
+            changed_files = generator.get_changed_files("/some/file.txt")
+            # Should return empty list on error
+            assert changed_files == []
+    
     def test_categorize_source_file_features(self):
         """Test categorizing a source file with feature-related content"""
         generator = DocumentationGenerator("test_api_key")
@@ -105,3 +115,75 @@ class TestDocumentationGenerator:
             assert category == "other"
         finally:
             os.unlink(temp_file_path)
+    
+    def test_categorize_source_file_read_error(self):
+        """Test categorizing a source file with read error"""
+        generator = DocumentationGenerator("test_api_key")
+        
+        # Mock open to raise an exception
+        with patch("builtins.open", side_effect=Exception("Read error")):
+            category = generator._categorize_source_file("/nonexistent/file.py")
+            # Should return 'other' on error
+            assert category == "other"
+    
+    def test_analyze_changes(self):
+        """Test analyzing changes in files"""
+        generator = DocumentationGenerator("test_api_key")
+        
+        # Create temporary files for testing
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f1, \
+             tempfile.NamedTemporaryFile(mode='w', suffix='.test.py', delete=False) as f2, \
+             tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f3, \
+             tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f4:
+            
+            f1.write("# New feature implementation")
+            f2.write("# Test for new feature")
+            f3.write("# Documentation for new feature")
+            f4.write("# Just a text file")
+            
+            temp_files = [f1.name, f2.name, f3.name, f4.name]
+        
+        try:
+            changed_files = temp_files
+            analysis = generator.analyze_changes(changed_files)
+            
+            # Check that files are categorized correctly
+            assert "features" in analysis
+            assert "tests" in analysis
+            assert "documentation" in analysis
+            assert "dependencies" in analysis
+            
+            # Check specific categorizations
+            assert any(f1.name in category for category in analysis.values())
+            assert any(f2.name in category for category in analysis.values())
+            assert any(f3.name in category for category in analysis.values())
+            assert any(f4.name in category for category in analysis.values())
+        finally:
+            for temp_file in temp_files:
+                os.unlink(temp_file)
+    
+    @patch('generate_docs.openai.OpenAI')
+    def test_call_openai_success(self, mock_openai):
+        """Test calling OpenAI API successfully"""
+        mock_choice = Mock()
+        mock_choice.message.content = "Generated content"
+        mock_response = Mock()
+        mock_response.choices = [mock_choice]
+        mock_openai.return_value.chat.completions.create.return_value = mock_response
+        
+        generator = DocumentationGenerator("test_api_key")
+        result = generator._call_openai("Test prompt")
+        
+        assert result == "Generated content"
+        mock_openai.return_value.chat.completions.create.assert_called_once()
+    
+    @patch('generate_docs.openai.OpenAI')
+    def test_call_openai_error(self, mock_openai):
+        """Test calling OpenAI API with error handling"""
+        mock_openai.return_value.chat.completions.create.side_effect = Exception("API Error")
+        
+        generator = DocumentationGenerator("test_api_key")
+        result = generator._call_openai("Test prompt")
+        
+        # Should return error message on API error
+        assert "Error generating content" in result
