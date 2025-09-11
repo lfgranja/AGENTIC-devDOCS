@@ -2,28 +2,6 @@
 """
 Script to automatically create GitHub issues from ISSUES_TO_CREATE documentation
 after a PR has been merged.
-
-MIT License
-
-Copyright (c) 2024 Luís Felipe Mesquita Granja
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 """
 
 import os
@@ -37,7 +15,7 @@ from github import Github, Issue, Repository
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__) 
 
 @dataclass
 class IssueInfo:
@@ -85,7 +63,7 @@ class IssueCreator:
             content = f.read()
             
         # Split content by issue headers (lines starting with ### Issue)
-        issue_sections = re.split(r'###\\s+Issue\\s+\\d+:\\s*', content)
+        issue_sections = re.split(r'###\s+Issue\s+\d+:\s*', content)
         
         # Remove the first section (header text before first issue)
         issue_sections = issue_sections[1:] if issue_sections else []
@@ -105,12 +83,10 @@ class IssueCreator:
         
         Args:
             section: Text content of a single issue section
-            
-        Returns:
-            IssueInfo object or None if parsing fails
         """
         # Extract title
-        title_match = re.search(r'^\\s*[*]{2}Title[*]{2}:\\s*(.+?)\\s*$', section, re.MULTILINE)
+        title_match = re.search(r'^\s*[*]{2}Title[*]{2}:\s*(.+?)\s*$',
+                              section, re.MULTILINE)
         if not title_match:
             logger.warning("Could not find title in issue section")
             return None
@@ -118,7 +94,7 @@ class IssueCreator:
         title = title_match.group(1).strip()
         
         # Extract description
-        desc_match = re.search(r'^\\s*[*]{2}Description[*]{2}:\\s*(.+?)\\s*$',
+        desc_match = re.search(r'^\s*[*]{2}Description[*]{2}:\s*(.+?)\s*$',
                               section, re.MULTILINE | re.DOTALL)
         if not desc_match:
             logger.warning(f"Could not find description for issue '{title}'")
@@ -129,7 +105,7 @@ class IssueCreator:
         description = '\n'.join(line.strip() for line in description_lines)
         
         # Extract labels
-        labels_match = re.search(r'^\\s*[*]{2}Labels[*]{2}:\\s*(.+?)\\s*$',
+        labels_match = re.search(r'^\s*[*]{2}Labels[*]{2}:\s*(.+?)\s*$',
                                section, re.MULTILINE)
         labels = []
         if labels_match:
@@ -137,22 +113,22 @@ class IssueCreator:
             labels = [label.strip() for label in re.split(r'[,;]', labels_text)]
             
         # Extract milestone
-        milestone_match = re.search(r'^\\s*[*]{2}Milestone[*]{2}:\\s*(.+?)\\s*$',
+        milestone_match = re.search(r'^\s*[*]{2}Milestone[*]{2}:\s*(.+?)\s*$',
                                   section, re.MULTILINE)
         milestone = milestone_match.group(1).strip() if milestone_match else None
         
         # Extract priority
-        priority_match = re.search(r'^\\s*[*]{2}Priority[*]{2}:\\s*(.+?)\\s*$',
+        priority_match = re.search(r'^\s*[*]{2}Priority[*]{2}:\s*(.+?)\s*$',
                                   section, re.MULTILINE)
         priority = priority_match.group(1).strip() if priority_match else None
         
         # Extract complexity
-        complexity_match = re.search(r'^\\s*[*]{2}Complexity[*]{2}:\\s*(.+?)\\s*$',
+        complexity_match = re.search(r'^\s*[*]{2}Complexity[*]{2}:\s*(.+?)\s*$',
                                     section, re.MULTILINE)
         complexity = complexity_match.group(1).strip() if complexity_match else None
         
         # Extract context
-        context_match = re.search(r'^\\s*[*]{2}Context[*]{2}:\\s*(.+?)\\s*$',
+        context_match = re.search(r'^\s*[*]{2}Context[*]{2}:\s*(.+?)\s*$',
                                  section, re.MULTILINE | re.DOTALL)
         context = context_match.group(1).strip() if context_match else None
         
@@ -212,7 +188,7 @@ class IssueCreator:
             logger.error(f"Error getting milestone '{milestone_title}': {e}")
             return None
             
-    def create_issue(self, issue_info: IssueInfo, pr_number: int) -> Optional[Issue]:
+    def create_issue(self, issue_info: IssueInfo, pr_number: int) -> 'Optional[Issue]':
         """
         Create a GitHub issue from IssueInfo
         
@@ -261,7 +237,7 @@ class IssueCreator:
             logger.error(f"Error creating issue '{issue_info.title}': {e}")
             return None
             
-    def create_issues_from_pr(self, pr_number: int, issues_file_path: str) -> List[Issue]:
+    def create_issues_from_pr(self, pr_number: int, issues_file_path: str) -> 'List[Issue]':
         """
         Create issues from ISSUES_TO_CREATE documentation after PR merge
         
@@ -291,7 +267,7 @@ class IssueCreator:
         logger.info(f"Successfully created {len(created_issues)} issues")
         return created_issues
         
-    def update_documentation(self, issues_file_path: str, created_issues: List[Issue]):
+    def update_documentation(self, issues_file_path: str, created_issues: 'List[Issue]'):
         """
         Update the ISSUES_TO_CREATE documentation with links to created issues
         
