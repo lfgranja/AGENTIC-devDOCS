@@ -1,0 +1,19 @@
+# .github/workflows/triage-to-project.yml
+name: Add PR to Project Board
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    name: Add PR to Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add PR to project board
+        uses: actions/add-to-project@v1.0.0
+        with:
+          project-url: "https://github.com/users/lfgranja/projects/1"
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          column-name: "In Review"
