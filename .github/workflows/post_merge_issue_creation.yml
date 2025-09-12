@@ -5,15 +5,14 @@ on:
     types: [closed]
     branches: [main, dev]
 
-permissions:
-  contents: read
-  issues: write
-
 jobs:
   create-issues:
     # Only run if the PR was merged (not just closed)
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
     
     steps:
     - name: Checkout code
