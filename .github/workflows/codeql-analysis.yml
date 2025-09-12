@@ -32,7 +32,7 @@ jobs:
       - name: Autobuild
         # CodeQL will automatically detect and build Python projects.
         # If you have a more complex build process, you can replace this with custom build steps.
-        uses: github/codeql-action/autobuild@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+        uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
