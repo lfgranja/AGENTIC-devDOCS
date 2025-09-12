@@ -147,6 +147,8 @@ This document provides a comprehensive development workflow for open source proj
 
 Follow strictly the process documented in `.qwen/POSTPR.md` after a PR has been approved. This document contains the complete post-PR approval process with detailed steps for documentation creation, issue tracking, and quality assurance.
 
+**Additionally, as part of the merge process, evaluate all contributions (comments, reviews, suggestions, and enhancements) from `gemini-code-assist`, `qodo-merge-pro`, or any other reviewers. For valid contributions, either incorporate them into new issues or consolidate them into existing ones, ensuring proper categorization, labeling, and priority assignment.**
+
 ## 9. Project Architecture and Technology Stack
 
 1. **Modular Design**: The project follows a modular architecture with:
