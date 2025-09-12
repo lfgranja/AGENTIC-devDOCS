@@ -1,4 +1,3 @@
-# .github/workflows/auto-assign.yml
 name: 'Auto Assign Reviewers'
 
 on:
@@ -8,9 +7,11 @@ on:
 jobs:
   add-reviewers:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Auto-assign reviewers
-        uses: kentaro-m/auto-assign-action@v2.0.0
+        uses: kentaro-m/auto-assign-action@f4648c0a9fdb753479e9e75fc251f507ce17bb7e
         with:
           configuration-path: '.github/auto_assign.yml'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
