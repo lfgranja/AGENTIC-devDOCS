@@ -1,0 +1,35 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+  schedule:
+    - cron: '30 1 * * 0' # Weekly on Sunday at 01:30 UTC
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+      with:
+        languages: python
+
+    - name: Autobuild
+      # CodeQL will automatically detect and build Python projects.
+      # If you have a more complex build process, you can replace this with custom build steps.
+      uses: github/codeql-action/autobuild@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
