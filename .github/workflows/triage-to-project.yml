@@ -2,9 +2,15 @@
 name: Add PR to Project Board
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
+
+permissions:
+  contents: read
+  pull-requests: write
+  # The 'issues: write' permission might be needed if the action also interacts with issues.
+  # For now, we'll keep it minimal.
 
 jobs:
   add-to-project:
@@ -16,4 +22,3 @@ jobs:
         with:
           project-url: "https://github.com/users/lfgranja/projects/1"
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-          column-name: "In Review"
