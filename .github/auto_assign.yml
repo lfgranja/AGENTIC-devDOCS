@@ -3,7 +3,7 @@
 # Enable adding reviewers to pull requests
 addReviewers: true
 
-# Configuration for assigning reviewers based on labels.
+# Define rules for assigning reviewers based on labels
 reviewers:
   - labels:
       - 'ci'
