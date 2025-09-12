@@ -3,16 +3,28 @@
 # Enable adding reviewers to pull requests
 addReviewers: true
 
-# Enable the use of review groups
-useReviewGroups: true
+# Define rules for assigning reviewers based on labels
+reviewers:
+  - labels:
+      - 'ci'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
 
-# Define review groups based on labels
-reviewGroups:
-  ci:
-    - 'lfgranja'
-  python:
-    - 'lfgranja'
-  tests:
-    - 'lfgranja'
-  documentation:
-    - 'lfgranja'
+  - labels:
+      - 'python'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
+
+  - labels:
+      - 'tests'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
+
+  - labels:
+      - 'documentation'
+    reviewers:
+      - 'lfgranja'
+    numberOfReviewers: 1
