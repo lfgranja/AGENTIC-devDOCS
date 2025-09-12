@@ -1,0 +1,40 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+  schedule:
+    - cron: '30 1 * * 0' # Weekly on Sunday at 01:30 UTC
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    # Skip runs for forked pull requests to avoid failures uploading SARIF due to limited GITHUB_TOKEN permissions.
+    # Only analyzes pushes and internal PRs.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+
+      - name: Autobuild
+        # CodeQL will automatically detect and build Python projects.
+        # If you have a more complex build process, you can replace this with custom build steps.
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        # CodeQL analysis results are uploaded to GitHub's security tab.
+        # GitHub can be configured to fail checks based on severity of findings.
