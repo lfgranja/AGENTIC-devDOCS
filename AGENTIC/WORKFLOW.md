@@ -200,7 +200,7 @@ Workflows triggered by `pull_request_target` run with elevated permissions on th
 **Best Practices for `pull_request_target` Workflows:**
 
 1.  **Never Checkout PR Code Directly**: Avoid using `actions/checkout` without specifying a `ref` or `fetch-depth` that explicitly targets the base branch or a trusted commit. If PR code must be accessed, do so in a separate, isolated job with restricted permissions.
-2.  **Use Only Trusted Actions**: Only use GitHub Actions from trusted sources (e.g., official GitHub actions or actions from well-known vendors). Always pin actions to a full commit SHA (e.g., `actions/checkout@v4.1.1` or `actions/checkout@<commit-sha>`) instead of floating tags (`@v4`) to prevent unexpected changes.
+2.  **Use Only Trusted Actions**: Only use GitHub Actions from trusted sources (e.g., official GitHub actions or actions from well-known vendors). Always pin actions to a full commit SHA (e.g., `actions/checkout@<full-commit-sha>`) instead of floating or version tags to prevent unexpected changes.
 3.  **Execute Only Base Repository Scripts**: If the workflow needs to execute scripts, ensure they are part of the base repository and not supplied by the pull request. Avoid `run` steps that could inadvertently execute malicious code from the PR.
 4.  **Minimize `GITHUB_TOKEN` Permissions**: Grant the `GITHUB_TOKEN` (or any other PAT) only the absolute minimum permissions required for the workflow to function. Adhere strictly to the principle of least privilege.
 5.  **Implement Guard Conditions**: Consider adding conditional steps or checks to prevent the workflow from proceeding if certain security criteria are not met (e.g., if the PR author is not a trusted contributor).
