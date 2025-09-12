@@ -16,20 +16,25 @@ jobs:
       actions: read
       contents: read
       security-events: write
+    # Skip runs for forked pull requests to avoid failures uploading SARIF due to limited GITHUB_TOKEN permissions.
+    # Only analyzes pushes and internal PRs.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
+      - name: Checkout repository
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
-      with:
-        languages: python
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+        with:
+          languages: python
 
-    - name: Autobuild
-      # CodeQL will automatically detect and build Python projects.
-      # If you have a more complex build process, you can replace this with custom build steps.
-      uses: github/codeql-action/autobuild@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+      - name: Autobuild
+        # CodeQL will automatically detect and build Python projects.
+        # If you have a more complex build process, you can replace this with custom build steps.
+        uses: github/codeql-action/autobuild@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+        # CodeQL analysis results are uploaded to GitHub's security tab.
+        # GitHub can be configured to fail checks based on severity of findings.
