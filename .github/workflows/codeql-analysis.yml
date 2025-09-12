@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@b67330f782787777d73222b717203500750276c3 # Pinned to v3.25.10
+        uses: github/codeql-action/init@v3
         with:
           languages: python
 
