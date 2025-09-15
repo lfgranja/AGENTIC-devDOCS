@@ -1,27 +1,32 @@
-name: "Actionlint"
+name: Lint GitHub Actions Workflows
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches:
+      - main
+      - dev
     paths:
       - '.github/workflows/**'
   pull_request:
-    branches: [ "main", "dev" ]
+    branches:
+      - main
+      - dev
     paths:
       - '.github/workflows/**'
+  workflow_dispatch:
 
 jobs:
   actionlint:
-    name: Lint GitHub Actions Workflows
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Required for checkout
-
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
-
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
       - name: Run actionlint
-        uses: reviewdog/action-actionlint@v1 # Pinned to v1
+        uses: reviewdog/action-actionlint@v1
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          actionlint_flags: "-color -verbose"
           fail_on_error: true
