@@ -1,0 +1,27 @@
+name: "Actionlint"
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+    paths:
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ "main", "dev" ]
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  actionlint:
+    name: Lint GitHub Actions Workflows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required for checkout
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # Pinned to v4.1.1
+
+      - name: Run actionlint
+        uses: reviewdog/action-actionlint@v1 # Pinned to v1
+        with:
+          fail_on_error: true
