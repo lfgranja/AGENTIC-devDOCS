@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  label-and-assign:
+  triage:
     runs-on: ubuntu-latest
     steps:
       - name: Label PR
