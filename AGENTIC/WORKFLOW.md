@@ -205,3 +205,25 @@ Workflows triggered by `pull_request_target` run with elevated permissions on th
 4.  **Minimize `GITHUB_TOKEN` Permissions**: Grant the `GITHUB_TOKEN` (or any other PAT) only the absolute minimum permissions required for the workflow to function. Adhere strictly to the principle of least privilege.
 5.  **Implement Guard Conditions**: Consider adding conditional steps or checks to prevent the workflow from proceeding if certain security criteria are not met (e.g., if the PR author is not a trusted contributor).
 6.  **Thorough Review**: All `pull_request_target` workflows must undergo rigorous security review.
+
+### 12.2. Personal Access Token (PAT) Management Strategy
+
+A robust strategy for managing Personal Access Tokens (PATs) is essential for maintaining the security of our CI/CD automation. Adhering to the following guidelines will help minimize risks associated with PAT usage:
+
+1.  **Naming Conventions:**
+    *   Establish clear and consistent naming conventions for PATs (e.g., `repo-name_ci-purpose_env`).
+    *   Include information about the PAT's purpose, scope, and associated repository/environment in its name or description.
+
+2.  **Principle of Least Privilege:**
+    *   Grant PATs only the absolute minimum scopes (permissions) required for their intended function. Avoid granting broad or unnecessary permissions.
+    *   Regularly review PAT scopes to ensure they remain aligned with current needs and revoke any excessive permissions.
+
+3.  **Rotation and Lifecycle Management:**
+    *   Implement a policy for regular PAT rotation (e.g., quarterly or semi-annually) to limit the window of exposure if a PAT is compromised.
+    *   Define a clear lifecycle for PATs, including creation, usage, and timely revocation when no longer needed (e.g., when a project is archived or a user leaves the team).
+    *   Utilize GitHub's features for PAT expiration where possible.
+
+4.  **Secure Storage and Usage:**
+    *   Never hardcode PATs directly into workflow files or repositories.
+    *   Store PATs securely as GitHub Secrets and access them via `secrets.PAT_NAME` in workflows.
+    *   Avoid exposing PATs in logs or build outputs.
