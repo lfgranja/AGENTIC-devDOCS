@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      projects: write
+      repository-projects: write
       # The 'issues: write' permission might be needed if the action also interacts with issues.
       # For now, we'll keep it minimal.
     steps:

@@ -47,8 +47,10 @@ jobs:
         fi
         
         echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-        echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        {
+          echo "$CHANGED_FILES"
+          echo "EOF"
+        } >> $GITHUB_OUTPUT
         
         # Save to a file for later use
         echo "$CHANGED_FILES" > changed_files.txt
@@ -74,10 +76,10 @@ jobs:
         if [ -f "AGENTIC/devDOCS/generate_docs.py" ]; then
           # Run the documentation generation script (placeholder)
           python AGENTIC/devDOCS/generate_docs.py \
-            --changed-files changed_files.txt \
-            --output-dir $DOC_DIR \
-            --branch $BRANCH_NAME \
-            --pr-number $PR_NUMBER || echo "Documentation generation failed, continuing..."
+            --changed-files "changed_files.txt" \
+            --output-dir "$DOC_DIR" \
+            --branch "$BRANCH_NAME" \
+            --pr-number "$PR_NUMBER" || echo "Documentation generation failed, continuing..."
         else
           echo "generate_docs.py not found, skipping documentation generation"
         fi

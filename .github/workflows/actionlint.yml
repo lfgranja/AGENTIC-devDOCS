@@ -29,4 +29,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           actionlint_flags: "-color -verbose"
-          fail_on_error: true
+          fail_level: error
