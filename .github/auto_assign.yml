@@ -7,23 +7,8 @@ addReviewers: true
 reviewers:
   - labels:
       - 'ci'
-    reviewers:
-      - 'lfgranja'
-    numberOfReviewers: 1
-
-  - labels:
       - 'python'
-    reviewers:
-      - 'lfgranja'
-    numberOfReviewers: 1
-
-  - labels:
       - 'tests'
-    reviewers:
-      - 'lfgranja'
-    numberOfReviewers: 1
-
-  - labels:
       - 'documentation'
     reviewers:
       - 'lfgranja'
