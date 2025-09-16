@@ -18,6 +18,7 @@ This repository contains comprehensive guidelines for AI-powered software develo
 - [`AGENTIC/POSTPR.md`](AGENTIC/POSTPR.md) - Post-PR approval process documentation
 - [`AGENTIC/QWEN.md`](AGENTIC/QWEN.md) - Qwen-specific directives
 - [`AGENTIC/GEMINI.md`](AGENTIC/GEMINI.md) - Gemini-specific guidelines
+- [`AGENTIC/devDOCS/ARCHITECTURE.md`](AGENTIC/devDOCS/ARCHITECTURE.md) - Architecture documentation for automation tools
 
 ## Testing
 
