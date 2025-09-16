@@ -14,19 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, '3.10', '3.11']
+        python-version: ['3.11', '3.12']
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
+      uses: actions/checkout@v4 # Updated to v4
     
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c
+      uses: actions/setup-python@v5 # Updated to v5
       with:
         python-version: ${{ matrix.python-version }}
     
     - name: Cache Python dependencies
-      uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f
+      uses: actions/cache@v4 # Updated to v4
       with:
         path: |
           ~/.cache/pip
@@ -39,7 +39,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f "requirements.txt" ]; then pip install -r "requirements.txt"; fi
-        pip install pytest pytest-mock
+        pip install pytest pytest-mock ruff mypy bandit # Added ruff, mypy, bandit
     
     - name: Check if tests directory exists
       id: check_tests
@@ -55,15 +55,16 @@ jobs:
       run: |
         python -m pytest tests/ -v
     
-    - name: Run linters
+    - name: Run Ruff linter
       run: |
-        # Check for syntax errors
-        find . -name "*.py" -exec python -m py_compile {} +
+        ruff check .
+    
+    - name: Run MyPy type checker
+      run: |
+        mypy .
     
     - name: Run security checks
       run: |
-        # Check for security issues in dependencies
-        pip install bandit
         bandit -r AGENTIC/devDOCS/ -x AGENTIC/devDOCS/__pycache__/ || true
 
   documentation:
@@ -73,35 +74,67 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
+      uses: actions/checkout@v4 # Updated to v4
+      with:
+        fetch-depth: 0 # Required to get full git history for changed files
     
     - name: Set up Python
-      uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c
+      uses: actions/setup-python@v5 # Updated to v5
       with:
-        python-version: '3.10'
+        python-version: '3.12' # Use Python 3.12 for documentation generation
     
     - name: Cache Python dependencies
-      uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f
+      uses: actions/cache@v4 # Updated to v4
       with:
         path: |
           ~/.cache/pip
           ${{ env.pythonLocation }}/lib/python*/site-packages
-        key: ${{ runner.os }}-python-3.10-pip-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-python-3.12-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-python-3.10-pip-
+          ${{ runner.os }}-python-3.12-pip-
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f "requirements.txt" ]; then pip install -r "requirements.txt"; fi
+        pip install openai PyYAML # Install openai and PyYAML for generate_docs.py
+    
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v40 # Action to get changed files
+      with:
+        files: |
+          **/*.py
+          **/*.md
+          **/*.txt
+          **/*.json
+          **/*.yaml
+          **/*.yml
     
     - name: Generate documentation
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Pass OpenAI API key as secret
       run: |
-        # Generate documentation for the project
-        python AGENTIC/devDOCS/generate_docs.py --help || true
-        python AGENTIC/devDOCS/create_issues.py --help || true
+        CHANGED_FILES_LIST="changed_files.txt"
+        echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' > $CHANGED_FILES_LIST
+        
+        OUTPUT_DIR="devDOCS/${{ github.event.pull_request.number || github.sha }}"
+        BRANCH_NAME="${{ github.head_ref || github.ref_name }}"
+        PR_NUMBER="${{ github.event.pull_request.number }}"
+        
+        python AGENTIC/devDOCS/generate_docs.py \
+          --changed-files $CHANGED_FILES_LIST \
+          --output-dir $OUTPUT_DIR \
+          --branch $BRANCH_NAME \
+          --pr-number $PR_NUMBER \
+          --openai-api-key $OPENAI_API_KEY
     
-    - name: Validate documentation
+    - name: Validate generated documentation
       run: |
-        # Check that documentation files are properly formatted
-        echo "Validating markdown files..."
+        OUTPUT_DIR="devDOCS/${{ github.event.pull_request.number || github.sha }}"
+        if [ -d "$OUTPUT_DIR" ] && [ "$(ls -A $OUTPUT_DIR)" ]; then
+          echo "Documentation generated successfully in $OUTPUT_DIR"
+        else
+          echo "Documentation generation failed or no files were generated."
+          exit 1
+        fi
