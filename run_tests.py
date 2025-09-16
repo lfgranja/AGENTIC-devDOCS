@@ -5,7 +5,6 @@ Test runner for AGENTIC-devDOCS automation scripts.
 
 import subprocess
 import sys
-import os
 
 def run_tests():
     """Run all tests using pytest"""

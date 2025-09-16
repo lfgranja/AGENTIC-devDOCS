@@ -3,7 +3,6 @@
 Script to validate GitHub Actions workflow files.
 """
 
-import os
 import yaml
 import sys
 from pathlib import Path

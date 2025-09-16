@@ -7,8 +7,7 @@ import os
 import json
 import yaml
 import logging
-from typing import Dict, Any, Optional
-from pathlib import Path
+from typing import Dict, Any, Optional, List
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +23,7 @@ class ConfigManager:
             config_path: Path to configuration file (optional)
         """
         self.config_path = config_path
-        self.config = {}
+        self.config: Dict[str, Any] = {}
         
     def load_config(self) -> Dict[str, Any]:
         """
@@ -86,7 +85,7 @@ class ConfigManager:
         return value
         
     @staticmethod
-    def find_config_file(possible_paths: list = None) -> Optional[str]:
+    def find_config_file(possible_paths: Optional[List[str]] = None) -> Optional[str]:
         """
         Find configuration file in common locations
         

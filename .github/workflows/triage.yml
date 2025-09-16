@@ -36,11 +36,14 @@ jobs:
                 config[label].forEach(reviewer => reviewers.add(reviewer));
               }
             }
-            if (reviewers.size > 0) {
+            // Filter out the PR author from the reviewers list
+            const filteredReviewers = Array.from(reviewers).filter(reviewer => reviewer !== pr.user.login);
+
+            if (filteredReviewers.length > 0) { // Check if there are any reviewers left after filtering
               await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: pr.number,
-                reviewers: Array.from(reviewers)
+                reviewers: filteredReviewers
               });
             }

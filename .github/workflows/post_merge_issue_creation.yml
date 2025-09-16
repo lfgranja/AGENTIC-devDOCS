@@ -56,10 +56,10 @@ jobs:
         # Check if the create_issues.py script exists
         if [ -f "AGENTIC/devDOCS/create_issues.py" ]; then
           python AGENTIC/devDOCS/create_issues.py \
-            --token $GITHUB_TOKEN \
-            --repo $REPO_NAME \
-            --pr $PR_NUMBER \
-            --issues-file $ISSUES_FILE || echo "Issue creation failed, continuing..."
+            --token "$GITHUB_TOKEN" \
+            --repo "$REPO_NAME" \
+            --pr "$PR_NUMBER" \
+            --issues-file "$ISSUES_FILE" || echo "Issue creation failed, continuing..."
         else
           echo "create_issues.py not found, skipping issue creation"
         fi

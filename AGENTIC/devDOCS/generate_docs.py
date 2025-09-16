@@ -29,10 +29,9 @@ import os
 import sys
 import argparse
 import logging
-from typing import List, Dict
+from typing import List, Dict, Any, Optional
 from pathlib import Path
-import git
-import openai
+import openai  # type: ignore
 
 # Import the config module
 from config import ConfigManager
@@ -72,7 +71,7 @@ class DocumentationGenerator:
             
         return changed_files
         
-    def analyze_changes(self, changed_files: List[str]) -> Dict[str, any]:
+    def analyze_changes(self, changed_files: List[str]) -> Dict[str, Any]:
         """
         Analyze code changes to identify key information for documentation
         
@@ -82,7 +81,7 @@ class DocumentationGenerator:
         Returns:
             Dictionary with analysis results
         """
-        analysis = {
+        analysis: Dict[str, List[str]] = {
             'features': [],
             'fixes': [],
             'refactorings': [],
@@ -137,7 +136,7 @@ class DocumentationGenerator:
             logger.warning(f"Could not analyze file {file_path}: {e}")
             return 'other'
             
-    def generate_lessons_learned(self, analysis: Dict[str, any], branch_name: str, pr_number: str) -> str:
+    def generate_lessons_learned(self, analysis: Dict[str, Any], branch_name: str, pr_number: Optional[str]) -> str:
         """
         Generate LESSONS_LEARNED documentation
         
@@ -177,7 +176,7 @@ class DocumentationGenerator:
         response = self._call_openai(prompt)
         return response
         
-    def generate_future_work(self, analysis: Dict[str, any], branch_name: str, pr_number: str) -> str:
+    def generate_future_work(self, analysis: Dict[str, Any], branch_name: str, pr_number: Optional[str]) -> str:
         """
         Generate FUTURE_WORK_TODO documentation
         
@@ -216,7 +215,7 @@ class DocumentationGenerator:
         response = self._call_openai(prompt)
         return response
         
-    def generate_issues_to_create(self, analysis: Dict[str, any], branch_name: str, pr_number: str) -> str:
+    def generate_issues_to_create(self, analysis: Dict[str, Any], branch_name: str, pr_number: Optional[str]) -> str:
         """
         Generate ISSUES_TO_CREATE documentation
         
@@ -249,7 +248,7 @@ class DocumentationGenerator:
         - Labels (use standard GitHub labels like enhancement, bug, documentation, etc.)
         - Milestone (if applicable)
         - Priority (high, medium, low)
-        - Complexity (low, medium, high)
+        - Complexity (low, medium, high]
         - Context
         
         Format each issue with markdown headers and bullet points. Use the following format:
@@ -296,7 +295,7 @@ class DocumentationGenerator:
             logger.error(f"Error calling OpenAI API: {e}")
             return f"Error generating content: {e}"
             
-    def generate_all_documentation(self, changed_files_path: str, output_dir: str, branch_name: str, pr_number: str = None):
+    def generate_all_documentation(self, changed_files_path: str, output_dir: str, branch_name: str, pr_number: Optional[str] = None):
         """
         Generate all documentation files
         
@@ -355,7 +354,7 @@ def main():
     
     # Load configuration
     config_manager = ConfigManager(args.config or ConfigManager.find_config_file())
-    config = config_manager.load_config()
+    
     
     # Use command line arguments if provided, otherwise use config file values
     changed_files_path = args.changed_files or config_manager.get('changed_files')
