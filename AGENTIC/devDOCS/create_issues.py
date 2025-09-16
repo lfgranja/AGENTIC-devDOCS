@@ -9,9 +9,9 @@ import sys
 import re
 import argparse
 import logging
-from typing import List, Dict, Optional
+from typing import List, Optional
 from dataclasses import dataclass
-from github import Github, Issue, Repository
+from github import Github, Issue  # type: ignore
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -41,7 +41,7 @@ class IssueCreator:
         """
         self.github = Github(github_token)
         self.repo = self.github.get_repo(repo_name)
-        self.created_issues = []
+        self.created_issues: List[Issue] = []
         
     def parse_issues_from_file(self, file_path: str) -> List[IssueInfo]:
         """
@@ -165,7 +165,7 @@ class IssueCreator:
             logger.error(f"Error validating labels: {e}")
             return []
             
-    def get_milestone_number(self, milestone_title: str) -> Optional[int]:
+    def get_milestone_number(self, milestone_title: Optional[str]) -> Optional[int]:
         """
         Get milestone number by title
         

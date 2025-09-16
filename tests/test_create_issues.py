@@ -6,8 +6,7 @@ Unit tests for the create_issues.py script.
 import os
 import sys
 import tempfile
-import pytest
-from unittest.mock import Mock, patch, mock_open
+from unittest.mock import Mock, patch
 
 # Add the devDOCS directory to the path so we can import the script
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'AGENTIC', 'devDOCS'))

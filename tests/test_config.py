@@ -6,7 +6,6 @@ Tests for the configuration module.
 import os
 import json
 import tempfile
-import pytest
 from unittest.mock import patch
 
 # Add the devDOCS directory to the path so we can import the module

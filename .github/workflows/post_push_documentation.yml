@@ -46,11 +46,11 @@ jobs:
           CHANGED_FILES=$(jq -r '.pull_request.changed_files[] | .filename' $GITHUB_EVENT_PATH 2>/dev/null || echo "")
         fi
         
-        echo "changed_files<<EOF" >> $GITHUB_OUTPUT
         {
+          echo "changed_files<<EOF"
           echo "$CHANGED_FILES"
           echo "EOF"
-        } >> $GITHUB_OUTPUT
+        } >> "$GITHUB_OUTPUT"
         
         # Save to a file for later use
         echo "$CHANGED_FILES" > changed_files.txt
