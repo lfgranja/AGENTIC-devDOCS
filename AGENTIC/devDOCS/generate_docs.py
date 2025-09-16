@@ -248,7 +248,7 @@ class DocumentationGenerator:
         - Labels (use standard GitHub labels like enhancement, bug, documentation, etc.)
         - Milestone (if applicable)
         - Priority (high, medium, low)
-        - Complexity (low, medium, high)
+        - Complexity (low, medium, high]
         - Context
         
         Format each issue with markdown headers and bullet points. Use the following format:
@@ -357,10 +357,10 @@ def main():
     
     
     # Use command line arguments if provided, otherwise use config file values
-    changed_files_path = args.changed-files or config_manager.get('changed_files')
-    output_dir = args.output-dir or config_manager.get('output_dir')
+    changed_files_path = args.changed_files or config_manager.get('changed_files')
+    output_dir = args.output_dir or config_manager.get('output_dir')
     branch_name = args.branch or config_manager.get('branch')
-    pr_number = args.pr-number or config_manager.get('pr_number')
+    pr_number = args.pr_number or config_manager.get('pr_number')
     openai_api_key = args.openai_api_key or config_manager.get('openai_api_key') or os.environ.get('OPENAI_API_KEY')
     
     # Validate required parameters
