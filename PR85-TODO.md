@@ -6,7 +6,7 @@ This document outlines the remaining tasks to get PR #85 merged, addressing all 
 
 **Context:** The GitHub Actions CI is failing with a `SyntaxError: unterminated string literal` in `AGENTIC/devDOCS/create_issues.py` at line 386. This is blocking the PR from being merged. Previous attempts to fix this programmatically have failed due to the file's large size and duplicated code making `replace` operations unreliable.
 
-**Action:** Manually fix the `SyntaxError` in `AGENTIC/devDOCS/create_issues.py`. This involves:
+**Action:** **[PENDING MANUAL INTERVENTION]** Manually fix the `SyntaxError` in `AGENTIC/devDOCS/create_issues.py`. This involves:
     *   Identifying the exact malformed regex string at line 386 (and potentially other similar malformed regexes in the duplicated code block).
     *   Correcting the unterminated string literal by adding the missing closing quote and `$` anchor.
     *   Removing the duplicated `IssueCreator` class and related functions to prevent future issues with `replace` and to clean up the codebase.
