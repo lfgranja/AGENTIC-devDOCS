@@ -103,7 +103,7 @@ To ensure efficient and safe operation, the agent should adhere to the following
 
 *   **Clarity on "MCPs"**: "MCPs" refer to Model Context Provider Servers, which are external services designed to provide specific contextual information to the agent.
 *   **Error Handling and Fallback**: Implement robust error handling for each tool. If a higher-priority tool fails, evaluate the error and, if appropriate, fall back to the next tool in this hierarchy.
-*   **Contextual Overrides**: While this order is a guideline, specific user requests or task contexts may override it (e.g., if a user explicitly asks to search the web for a topic or run a specific command).
+*   **Contextual Overrides**: While this order is a guideline, **user requests for specific tools take precedence**. If a user explicitly asks to use a particular tool (e.g., `WebFetch`, `run_shell_command`), that request should be honored, even if it falls outside the established hierarchy.
 
 ## Interaction Details
 - **Help Command:** The user can use '/help' to display help information.
